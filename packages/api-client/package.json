@@ -1,0 +1,27 @@
+{
+  "name": "@musiversal/api-client",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "pnpm generate && tsup",
+    "dev": "nodemon --watch swagger.json --exec 'pnpm generate && pnpm build' --delay 1000",
+    "lint": "eslint .",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "generate": "orval",
+    "prepare": "mkdir -p src/api src/model"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.0",
+    "orval": "^6.31.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.9.0"
+  }
+}

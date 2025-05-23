@@ -1,0 +1,36 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "retry": "Reintentar"
+  },
+  "layout": {
+    "menu": "Menú",
+    "songs": "Canciones",
+    "playlists": "Listas de reproducción",
+    "settings": "Configuración"
+  },
+  "songs": {
+    "title": "Mi Colección de Música",
+    "upload": "Subir Canción",
+    "edit": "Editar Canción",
+    "delete": "Eliminar Canción",
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "search": "Buscar canciones...",
+    "noSongs": "No se encontraron canciones",
+    "uploadSuccess": "Canción subida exitosamente",
+    "uploadError": "Error al subir la canción",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta canción?",
+    "deleteSuccess": "Canción eliminada exitosamente",
+    "deleteError": "Error al eliminar la canción"
+  },
+  "player": {
+    "nowPlaying": "Reproduciendo Ahora",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "volume": "Volumen",
+    "mute": "Silenciar",
+    "unmute": "Activar sonido"
+  }
+} 

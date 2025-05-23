@@ -1,0 +1,256 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/songs": {
+      "get": {
+        "description": "Retrieves a list of all songs in the system. Optionally filter by search term.",
+        "operationId": "SongController_findAll",
+        "parameters": [
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search term to filter songs by name or artist",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of songs retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all songs",
+        "tags": [
+          "Songs"
+        ]
+      },
+      "post": {
+        "description": "Creates a new song with required metadata and files. Cover image is required, audio file is optional.",
+        "operationId": "SongController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the song"
+                  },
+                  "artist": {
+                    "type": "string",
+                    "description": "The artist of the song"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The cover image file (jpg, jpeg, png) - max 10MB"
+                  },
+                  "audioFile": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The audio file (mp3, wav, ogg) - max 100MB"
+                  }
+                },
+                "required": [
+                  "name",
+                  "artist",
+                  "coverImage"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Create a new song",
+        "tags": [
+          "Songs"
+        ]
+      }
+    },
+    "/songs/{id}": {
+      "put": {
+        "description": "Updates an existing song by its ID. Can update metadata and/or files.",
+        "operationId": "SongController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the song to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the song"
+                  },
+                  "artist": {
+                    "type": "string",
+                    "description": "The artist of the song"
+                  },
+                  "coverImage": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The cover image file (jpg, jpeg, png) - max 10MB"
+                  },
+                  "audioFile": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The audio file (mp3, wav, ogg) - max 100MB"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The song has been successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Song"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data provided"
+          },
+          "404": {
+            "description": "Song not found"
+          }
+        },
+        "summary": "Update a song",
+        "tags": [
+          "Songs"
+        ]
+      },
+      "delete": {
+        "description": "Deletes a song and its associated files by ID",
+        "operationId": "SongController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the song to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The song has been successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Song not found"
+          }
+        },
+        "summary": "Delete a song",
+        "tags": [
+          "Songs"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Music Collection API",
+    "description": "The Music Collection API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "Song": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the song"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the song"
+          },
+          "artist": {
+            "type": "string",
+            "description": "The artist of the song"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The URL/path to the song image"
+          },
+          "audioUrl": {
+            "type": "string",
+            "description": "The URL/path to the song audio file"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "artist",
+          "imageUrl"
+        ]
+      }
+    }
+  }
+}

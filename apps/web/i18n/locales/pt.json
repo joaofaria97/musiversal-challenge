@@ -1,0 +1,36 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "retry": "Tentar novamente"
+  },
+  "layout": {
+    "menu": "Menu",
+    "songs": "Músicas",
+    "playlists": "Playlists",
+    "settings": "Configurações"
+  },
+  "songs": {
+    "title": "Minha Coleção de Música",
+    "upload": "Enviar Música",
+    "edit": "Editar Música",
+    "delete": "Excluir Música",
+    "play": "Tocar",
+    "pause": "Pausar",
+    "search": "Buscar músicas...",
+    "noSongs": "Nenhuma música encontrada",
+    "uploadSuccess": "Música enviada com sucesso",
+    "uploadError": "Erro ao enviar música",
+    "deleteConfirm": "Tem certeza que deseja excluir esta música?",
+    "deleteSuccess": "Música excluída com sucesso",
+    "deleteError": "Erro ao excluir música"
+  },
+  "player": {
+    "nowPlaying": "Tocando Agora",
+    "next": "Próxima",
+    "previous": "Anterior",
+    "volume": "Volume",
+    "mute": "Mutar",
+    "unmute": "Desmutar"
+  }
+} 

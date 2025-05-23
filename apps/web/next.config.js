@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: true,
+  transpilePackages: ['@musiversal/design-system'],
+  env: {
+    PORT: process.env.PORT || '3001',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  },
+};
 
-export default nextConfig;
+module.exports = nextConfig; 
