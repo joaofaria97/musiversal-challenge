@@ -1,11 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import { 
   songControllerFindAll,
   songControllerCreate,
   songControllerUpdate,
   songControllerDelete,
   type SongControllerCreateBody,
-  type SongControllerUpdateBody
+  type SongControllerUpdateBody,
+  type Song, // Assuming Song is the return type for create/update
 } from '@musiversal/api-client';
 import { toast } from '@musiversal/design-system';
 import { useRouter } from 'next/navigation';
@@ -15,11 +16,17 @@ interface ApiErrorResponse {
   message: string;
 }
 
+// Define a type for mutation options that can be passed to mutate functions
+type MutationCallbacks<TData = unknown, TVariables = unknown> = Pick<
+  UseMutationOptions<TData, AxiosError<ApiErrorResponse>, TVariables>,
+  'onSuccess' | 'onError' | 'onSettled'
+>;
+
 export function useSongs(search?: string) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: songs, isLoading, error } = useQuery({
+  const { data: songs, isLoading, error } = useQuery<Song[], Error>({
     queryKey: ['songs', search],
     queryFn: async () => {
       if (search) {
@@ -41,9 +48,9 @@ export function useSongs(search?: string) {
     toast.error('Failed to load songs. Please try again later.');
   }
 
-  const createSong = useMutation({
+  const createSongMutation = useMutation<void, AxiosError<ApiErrorResponse>, SongControllerCreateBody>({
     mutationFn: (data: SongControllerCreateBody) => songControllerCreate(data),
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       toast.success('Song uploaded successfully');
       queryClient.invalidateQueries({ queryKey: ['songs'] });
       router.refresh();
@@ -55,10 +62,10 @@ export function useSongs(search?: string) {
     }
   });
 
-  const updateSong = useMutation({
+  const updateSongMutation = useMutation<Song, AxiosError<ApiErrorResponse>, { id: string; data: SongControllerUpdateBody }>({
     mutationFn: ({ id, data }: { id: string; data: SongControllerUpdateBody }) => 
       songControllerUpdate(id, data),
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       toast.success('Song updated successfully');
       queryClient.invalidateQueries({ queryKey: ['songs'] });
       router.refresh();
@@ -70,8 +77,8 @@ export function useSongs(search?: string) {
     }
   });
 
-  const deleteSong = useMutation({
-    mutationFn: (id: string) => songControllerDelete(id),
+  const deleteSongMutation = useMutation<void, AxiosError<ApiErrorResponse>, string>({
+    mutationFn: (id: string) => songControllerDelete(id).then(() => undefined),
     onSuccess: () => {
       toast.success('Song deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['songs'] });
@@ -88,11 +95,14 @@ export function useSongs(search?: string) {
     songs,
     isLoading,
     error,
-    createSong: (data: SongControllerCreateBody) => createSong.mutate(data),
-    updateSong: (id: string, data: SongControllerUpdateBody) => updateSong.mutate({ id, data }),
-    deleteSong: (id: string) => deleteSong.mutate(id),
-    isUploading: createSong.isPending,
-    isUpdating: updateSong.isPending,
-    isDeleting: deleteSong.isPending
+    createSong: (data: SongControllerCreateBody, options?: MutationCallbacks<void, SongControllerCreateBody>) => 
+      createSongMutation.mutate(data, options),
+    updateSong: (id: string, data: SongControllerUpdateBody, options?: MutationCallbacks<Song, { id: string; data: SongControllerUpdateBody }>) => 
+      updateSongMutation.mutate({ id, data }, options),
+    deleteSong: (id: string, options?: MutationCallbacks<void, string>) => 
+      deleteSongMutation.mutate(id, options),
+    isUploading: createSongMutation.isPending,
+    isUpdating: updateSongMutation.isPending,
+    isDeleting: deleteSongMutation.isPending
   };
 } 

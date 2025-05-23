@@ -87,23 +87,38 @@ export class SongController {
             maxSize: 100 * 1024 * 1024
           }),
         ],
+        fileIsRequired: false,
       }),
     )
     files: { coverImage?: Express.Multer.File[]; audioFile?: Express.Multer.File[] },
   ): Promise<Song> {
-    console.log('Files received:', files);
+    this.logger.debug(`Create song request body: ${JSON.stringify(createSongDto)}`);
+    this.logger.debug(`Initial files object received by controller: ${JSON.stringify(Object.keys(files || {}))}`);
+    this.logger.debug(`Initial coverImage field: ${JSON.stringify(files?.coverImage)}`);
+    this.logger.debug(`Initial coverImage present - ${!!files?.coverImage?.[0]}, audioFile present - ${!!files?.audioFile?.[0]}`);
+
+    this.logger.debug(`Value of files before check: ${JSON.stringify(files)}`);
+    this.logger.debug(`Value of files.coverImage before check: ${JSON.stringify(files?.coverImage)}`);
+    if (files?.coverImage) {
+      this.logger.debug(`Type of files.coverImage: ${typeof files.coverImage}`);
+      this.logger.debug(`Is files.coverImage an array? ${Array.isArray(files.coverImage)}`);
+      this.logger.debug(`Length of files.coverImage: ${files.coverImage.length}`);
+      this.logger.debug(`Value of files.coverImage[0] before check: ${JSON.stringify(files.coverImage[0])}`);
+      this.logger.debug(`Is files.coverImage[0] truthy? ${!!files.coverImage[0]}`);
+    }
     
-    if (!files.coverImage?.[0]) {
+    if (!files?.coverImage?.[0]) {
+      this.logger.error('Cover image is required but was not found (or was falsy) in uploaded files at the point of check.');
+      this.logger.error(`Detailed files.coverImage state at failure: ${JSON.stringify(files?.coverImage)}`);
       throw new BadRequestException('Cover image is required');
     }
     const coverImage = files.coverImage[0];
     const audioFile = files.audioFile?.[0];
 
-    console.log('Cover image details:', {
-      filename: coverImage.originalname,
-      mimetype: coverImage.mimetype,
-      size: coverImage.size
-    });
+    this.logger.debug(`Cover image details: ${coverImage.originalname}, ${coverImage.mimetype}, ${coverImage.size} bytes`);
+    if (audioFile) {
+      this.logger.debug(`Audio file details: ${audioFile.originalname}, ${audioFile.mimetype}, ${audioFile.size} bytes`);
+    }
 
     return this.songService.create(createSongDto, coverImage, audioFile);
   }
