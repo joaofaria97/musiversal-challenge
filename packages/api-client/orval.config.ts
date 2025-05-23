@@ -12,15 +12,14 @@ export default defineConfig({
       override: {
         query: {
           useQuery: true,
-          useInfinite: true,
-          useInfiniteQueryParam: 'page',
+          useInfinite: false,
           options: {
             staleTime: 10000,
           },
         },
         mutator: {
           path: './src/mutator/custom-instance.ts',
-          name: 'customInstance',
+          name: 'customInstanceAsync',
         },
       },
     },

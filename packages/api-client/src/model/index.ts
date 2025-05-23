@@ -9,4 +9,5 @@
 export * from "./song";
 export * from "./songControllerCreateBody";
 export * from "./songControllerDelete200";
+export * from "./songControllerFindAllParams";
 export * from "./songControllerUpdateBody";

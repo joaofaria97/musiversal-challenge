@@ -69,11 +69,11 @@ export function MusicPlayer() {
               </p>
             </div>
 
-            {/* Play Button - Small */}
+            {/* Play Button - Bigger for mobile */}
             <PlayButton 
               isPlaying={isPlaying}
               onClick={togglePlayPause}
-              size="sm"
+              size="lg"
               disabled={!currentSong.audioUrl}
             />
 

@@ -42,25 +42,27 @@ const SongCard = memo(({
   <Card 
     key={song.id} 
     variant="bordered" 
-    className="hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm border border-zinc-200 rounded-xl transform hover:-translate-y-1"
+    className="hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm border border-zinc-200 rounded-xl transform hover:-translate-y-1 relative"
   >
-    <div className="aspect-square relative group overflow-hidden rounded-t-xl">
-      <img
-        src={`${API_BASE_URL}/storage/${song.imageUrl}`}
-        alt={`${song.name} cover`}
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-      />
+    <div className="aspect-square relative group overflow-hidden rounded-t-xl -m-px">
+      <div className="absolute inset-0 overflow-hidden rounded-t-xl">
+        <img
+          src={`${API_BASE_URL}/storage/${song.imageUrl}`}
+          alt={`${song.name} cover`}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
       {song.audioUrl ? (
-        <div className="absolute top-2 right-2 bg-violet-500/80 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+        <div className="absolute top-2 right-2 bg-violet-500/80 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1 z-10">
           <Music className="w-3 h-3" />
         </div>
       ) : (
-        <div className="absolute top-2 right-2 bg-zinc-400/80 text-zinc-200 text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+        <div className="absolute top-2 right-2 bg-zinc-400/80 text-zinc-200 text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1 z-10">
           <Music className="w-3 h-3" />
         </div>
       )}
       {/* Always visible play button on mobile, hover on desktop */}
-      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/40 to-transparent flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/40 to-transparent flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 z-10">
         <PlayButton 
           onClick={() => onPlay(song.id)}
           size="lg"

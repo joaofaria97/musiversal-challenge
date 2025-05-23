@@ -5,13 +5,11 @@
  * The Music Collection API description
  * OpenAPI spec version: 1.0
  */
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   MutationFunction,
   QueryFunction,
   QueryKey,
-  UseInfiniteQueryOptions,
-  UseInfiniteQueryResult,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -21,73 +19,17 @@ import type {
   Song,
   SongControllerCreateBody,
   SongControllerDelete200,
+  SongControllerFindAllParams,
   SongControllerUpdateBody,
 } from "../model";
-import { customInstance } from "../mutator/custom-instance";
+import { customInstanceAsync } from "../mutator/custom-instance";
 
 export const appControllerGetHello = (signal?: AbortSignal) => {
-  return customInstance<void>({ url: `/`, method: "GET", signal });
+  return customInstanceAsync<void>({ url: `/`, method: "GET", signal });
 };
 
 export const getAppControllerGetHelloQueryKey = () => {
   return [`/`] as const;
-};
-
-export const getAppControllerGetHelloInfiniteQueryOptions = <
-  TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof appControllerGetHello>>,
-    TError,
-    TData
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getAppControllerGetHelloQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof appControllerGetHello>>
-  > = ({ signal }) => appControllerGetHello(signal);
-
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof appControllerGetHello>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type AppControllerGetHelloInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof appControllerGetHello>>
->;
-export type AppControllerGetHelloInfiniteQueryError = unknown;
-
-export const useAppControllerGetHelloInfinite = <
-  TData = Awaited<ReturnType<typeof appControllerGetHello>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof appControllerGetHello>>,
-    TError,
-    TData
-  >;
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getAppControllerGetHelloInfiniteQueryOptions(options);
-
-  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
-    TData,
-    TError
-  > & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
 };
 
 export const getAppControllerGetHelloQueryOptions = <
@@ -147,94 +89,48 @@ export const useAppControllerGetHello = <
 };
 
 /**
- * Retrieves a list of all songs in the system
+ * Retrieves a list of all songs in the system. Optionally filter by search term.
  * @summary Get all songs
  */
-export const songControllerFindAll = (signal?: AbortSignal) => {
-  return customInstance<Song[]>({ url: `/songs`, method: "GET", signal });
+export const songControllerFindAll = (
+  params?: SongControllerFindAllParams,
+  signal?: AbortSignal,
+) => {
+  return customInstanceAsync<Song[]>({
+    url: `/songs`,
+    method: "GET",
+    params,
+    signal,
+  });
 };
 
-export const getSongControllerFindAllQueryKey = () => {
-  return [`/songs`] as const;
-};
-
-export const getSongControllerFindAllInfiniteQueryOptions = <
-  TData = Awaited<ReturnType<typeof songControllerFindAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof songControllerFindAll>>,
-    TError,
-    TData
-  >;
-}) => {
-  const { query: queryOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getSongControllerFindAllQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof songControllerFindAll>>
-  > = ({ signal }) => songControllerFindAll(signal);
-
-  return {
-    queryKey,
-    queryFn,
-    staleTime: 10000,
-    ...queryOptions,
-  } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof songControllerFindAll>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type SongControllerFindAllInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof songControllerFindAll>>
->;
-export type SongControllerFindAllInfiniteQueryError = unknown;
-
-/**
- * @summary Get all songs
- */
-export const useSongControllerFindAllInfinite = <
-  TData = Awaited<ReturnType<typeof songControllerFindAll>>,
-  TError = unknown,
->(options?: {
-  query?: UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof songControllerFindAll>>,
-    TError,
-    TData
-  >;
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSongControllerFindAllInfiniteQueryOptions(options);
-
-  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
-    TData,
-    TError
-  > & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
+export const getSongControllerFindAllQueryKey = (
+  params?: SongControllerFindAllParams,
+) => {
+  return [`/songs`, ...(params ? [params] : [])] as const;
 };
 
 export const getSongControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof songControllerFindAll>>,
   TError = unknown,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof songControllerFindAll>>,
-    TError,
-    TData
-  >;
-}) => {
+>(
+  params?: SongControllerFindAllParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof songControllerFindAll>>,
+      TError,
+      TData
+    >;
+  },
+) => {
   const { query: queryOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getSongControllerFindAllQueryKey();
+  const queryKey =
+    queryOptions?.queryKey ?? getSongControllerFindAllQueryKey(params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof songControllerFindAll>>
-  > = ({ signal }) => songControllerFindAll(signal);
+  > = ({ signal }) => songControllerFindAll(params, signal);
 
   return {
     queryKey,
@@ -259,14 +155,17 @@ export type SongControllerFindAllQueryError = unknown;
 export const useSongControllerFindAll = <
   TData = Awaited<ReturnType<typeof songControllerFindAll>>,
   TError = unknown,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof songControllerFindAll>>,
-    TError,
-    TData
-  >;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSongControllerFindAllQueryOptions(options);
+>(
+  params?: SongControllerFindAllParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof songControllerFindAll>>,
+      TError,
+      TData
+    >;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getSongControllerFindAllQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -292,7 +191,7 @@ export const songControllerCreate = (
     formData.append("audioFile", songControllerCreateBody.audioFile);
   }
 
-  return customInstance<void>({
+  return customInstanceAsync<void>({
     url: `/songs`,
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
@@ -382,7 +281,7 @@ export const songControllerUpdate = (
     formData.append("audioFile", songControllerUpdateBody.audioFile);
   }
 
-  return customInstance<Song>({
+  return customInstanceAsync<Song>({
     url: `/songs/${id}`,
     method: "PUT",
     headers: { "Content-Type": "multipart/form-data" },
@@ -455,7 +354,7 @@ export const useSongControllerUpdate = <
  * @summary Delete a song
  */
 export const songControllerDelete = (id: string) => {
-  return customInstance<SongControllerDelete200>({
+  return customInstanceAsync<SongControllerDelete200>({
     url: `/songs/${id}`,
     method: "DELETE",
   });

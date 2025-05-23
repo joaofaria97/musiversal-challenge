@@ -5,7 +5,7 @@ import { Play, Pause } from 'lucide-react';
 interface PlayButtonProps {
   isPlaying?: boolean;
   onClick?: () => void;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   disabled?: boolean;
   className?: string;
 }
@@ -20,13 +20,17 @@ export function PlayButton({
   const sizeClasses = {
     sm: 'p-2',
     md: 'p-3',
-    lg: 'p-4'
+    lg: 'p-4',
+    xl: 'p-5',
+    '2xl': 'p-6'
   };
 
   const iconSizes = {
     sm: 'w-4 h-4',
     md: 'w-5 h-5',
-    lg: 'w-6 h-6'
+    lg: 'w-6 h-6',
+    xl: 'w-7 h-7',
+    '2xl': 'w-8 h-8'
   };
 
   const buttonClasses = disabled 
