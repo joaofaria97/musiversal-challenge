@@ -36,10 +36,12 @@ export const getAppControllerGetHelloQueryOptions = <
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
   TError = unknown,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof appControllerGetHello>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof appControllerGetHello>>,
+      TError,
+      TData
+    >
   >;
 }) => {
   const { query: queryOptions } = options ?? {};
@@ -71,10 +73,12 @@ export const useAppControllerGetHello = <
   TData = Awaited<ReturnType<typeof appControllerGetHello>>,
   TError = unknown,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof appControllerGetHello>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof appControllerGetHello>>,
+      TError,
+      TData
+    >
   >;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getAppControllerGetHelloQueryOptions(options);
@@ -116,10 +120,12 @@ export const getSongControllerFindAllQueryOptions = <
 >(
   params?: SongControllerFindAllParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof songControllerFindAll>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof songControllerFindAll>>,
+        TError,
+        TData
+      >
     >;
   },
 ) => {
@@ -158,10 +164,12 @@ export const useSongControllerFindAll = <
 >(
   params?: SongControllerFindAllParams,
   options?: {
-    query?: UseQueryOptions<
-      Awaited<ReturnType<typeof songControllerFindAll>>,
-      TError,
-      TData
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof songControllerFindAll>>,
+        TError,
+        TData
+      >
     >;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
