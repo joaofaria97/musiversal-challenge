@@ -24,7 +24,7 @@ importers:
         specifier: ^3.2.5
         version: 3.5.3
       turbo:
-        specifier: ^1.12.4
+        specifier: ^1.13.4
         version: 1.13.4
       typescript:
         specifier: ^5.3.3
@@ -217,9 +217,6 @@ importers:
 
   packages/api-client:
     dependencies:
-      '@tanstack/react-query':
-        specifier: ^5.76.2
-        version: 5.76.2(react@19.1.0)
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -3256,15 +3253,6 @@ packages:
     dependencies:
       '@tanstack/query-core': 5.76.2
       react: 18.3.1
-    dev: false
-
-  /@tanstack/react-query@5.76.2(react@19.1.0):
-    resolution: {integrity: sha512-rGkWberCrFdIxMdvSAJM/UOKeu0O/JVTbMmfhQoJpiU9Uq0EDx2EMCadnNuJWbXR4smDA2t7DY3NKkYFmDVS5A==}
-    peerDependencies:
-      react: ^18 || ^19
-    dependencies:
-      '@tanstack/query-core': 5.76.2
-      react: 19.1.0
     dev: false
 
   /@tokenizer/inflate@0.2.7:
