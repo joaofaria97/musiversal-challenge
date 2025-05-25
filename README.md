@@ -1,56 +1,75 @@
-# Turborepo starter
+# Vinly - Your Personal Music Collection
 
-This Turborepo starter is maintained by the Turborepo core team.
+This is a monorepo for the Vinly application, a personal music collection organizer.
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
+## Project Structure
 
 This Turborepo includes the following packages/apps:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `apps/web`: The Next.js frontend application for Vinly.
+- `apps/api`: The NestJS backend API for Vinly.
+- `packages/design-system`: A shared React component library used by the `web` app.
+- `packages/api-client`: A generated TypeScript client for interacting with the `api`.
+- `packages/eslint-config`: Shared ESLint configurations.
+- `packages/typescript-config`: Shared `tsconfig.json` configurations.
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
+## Getting Started (Local Development)
 
-This Turborepo has some additional tools already setup for you:
+To run Vinly locally after cloning the repository:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+1.  **Ensure you have Node.js and pnpm installed.**
+    - Node.js version should match the one specified in the root `package.json` (`engines.node`).
+    - pnpm version should match the one specified in `packageManager` in the root `package.json`.
 
-### Build
+2.  **Install Dependencies:**
+    Navigate to the root directory of the cloned repository and run:
+    ```sh
+    pnpm install
+    ```
+    This command will install all necessary dependencies for all packages and apps in the monorepo.
 
-To build all apps and packages, run the following command:
+3.  **Set Up Environment Variables:**
+    Both the `web` and `api` applications might require environment variables for local development.
 
-```
-cd my-turborepo
-pnpm build
-```
+    *   **For the Web App (`apps/web`):**
+        Create a `.env.local` file in the `apps/web` directory. Refer to the `apps/web/next.config.js` (or similar configuration files) to see what environment variables might be expected (e.g., `NEXT_PUBLIC_API_URL`). For basic local setup, you might need:
+        ```env
+        # apps/web/.env.local
+        NEXT_PUBLIC_API_URL=http://localhost:3000 # Port where your local API will run
+        
+        # For the simple password authentication (if implemented):
+        # PASSWORD_SALT=your_generated_salt_for_local_dev
+        # SHARED_PASSWORD_HASH=your_generated_hash_for_local_dev
+        ```
+        *(To generate `PASSWORD_SALT` and `SHARED_PASSWORD_HASH`, you can use the command: `node -e "const crypto = require('crypto'); const p = 'your_local_password'; const s = crypto.randomBytes(16).toString('hex'); const h = crypto.pbkdf2Sync(p, s, 100000, 64, 'sha512').toString('hex'); console.log('PASSWORD_SALT=' + s + '\nSHARED_PASSWORD_HASH=' + h);"`)*
 
-### Develop
+    *   **For the API App (`apps/api`):**
+        Create a `.env` file in the `apps/api` directory. Example content:
+        ```env
+        # apps/api/.env
+        PORT=3000 # Port for the API to run on
+        NODE_ENV=development
+        # Add any other necessary variables like database URLs, etc.
+        ```
 
-To develop all apps and packages, run the following command:
+4.  **Run in Development Mode:**
+    From the root directory of the monorepo, run:
+    ```sh
+    pnpm dev
+    ```
+    This command uses Turborepo to start all applications (web and api) in development mode simultaneously. 
+    - The web app (Vinly frontend) will typically be available at `http://localhost:3001` (or the port specified in `apps/web/package.json` or its `.env.local`).
+    - The API backend will typically be available at `http://localhost:3000` (or the port specified in `apps/api/.env`).
 
-```
-cd my-turborepo
-pnpm dev
-```
+5.  **Build for Production:**
+    To build all apps and packages for production, run the following command from the root directory:
+    ```sh
+    pnpm build
+    ```
 
-### Remote Caching
+## Remote Caching
 
 > [!TIP]
 > Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
