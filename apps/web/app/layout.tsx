@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import AuthenticatedLayoutWrapper from "@/components/auth/AuthenticatedLayoutWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased bg-zinc-50`}>
         <Providers>
-          {children}
+          <AuthenticatedLayoutWrapper>
+            {children}
+          </AuthenticatedLayoutWrapper>
         </Providers>
       </body>
     </html>

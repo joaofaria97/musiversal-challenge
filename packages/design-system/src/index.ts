@@ -7,3 +7,5 @@ export * from './components/ConfirmModal';
 export * from './components/ui/modal';
 export * from './components/UploadSongModal';
 export * from './components/EditSongModal';
+export * from "./components/Input";
+export * from "./components/FormLabel";
