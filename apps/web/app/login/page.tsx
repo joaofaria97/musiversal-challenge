@@ -54,19 +54,17 @@ export default function LoginPage() {
           onSubmit={handleSubmit} 
           className="p-6 bg-slate-50/50 shadow-lg rounded-xl space-y-6 border border-slate-200"
         >
-          <div className="space-y-1.5">
-            <FormLabel htmlFor="password" className="text-slate-700">Password</FormLabel>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              disabled={isLoading}
-              required
-              className="bg-white text-slate-900 placeholder-slate-400 focus:ring-violet-500 focus:border-violet-500"
-            />
-          </div>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            placeholder="Password"
+            disabled={isLoading}
+            required
+            className="bg-white text-slate-900 placeholder-slate-400 focus:ring-violet-500 focus:border-violet-500"
+            aria-label="Password"
+          />
 
           {error && (
             <p className="text-sm text-red-600 bg-red-100 p-3 rounded-md border border-red-200 text-center">
